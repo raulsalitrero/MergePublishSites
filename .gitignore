@@ -1,3 +1,4 @@
-node_modules
-svn
+/node_modules/
+/svn
+/built
 ultconfig.json
