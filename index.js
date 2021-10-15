@@ -18,7 +18,7 @@ const fs = require('fs-extra');
 let ultimos = sitios;
 try {
     ultimos = require("./ultconfig.json");
-   // console.log('ult', ultimos);
+    // console.log('ult', ultimos);
     /* obtiene todas las propiedades del sitio desde sitios.json si existe y el valor de compilar del ultimos */
     ultimos.sitios = ultimos.sitios.map(ult => {
         let actual = sitios.sitios.find(act => act.clave === ult.clave) || ult;
@@ -81,12 +81,12 @@ try {
             let v = (await inquirer.prompt([
                 {
                     type: 'input',
-                    message: query + chalk.cyan(` (S[${chalk.underline('i')}]/N[${chalk.underline('o')}])`),
+                    message: query + chalk.cyan(` (S${chalk.gray`[${chalk.underline`i`}]`}/N${chalk.gray`[${chalk.underline`o`}]`})`),
                     name: 'valor',
                     default: defa ? 'S' : 'N',
                     validate: function (valor) {
                         return /^(si?|no?)$/ig.test((valor || '').trim()) ||
-                            'Escriba un valor valido' + chalk.cyan(` (S[${chalk.underline('i')}]/N[${chalk.underline('o')}])`);
+                            'Escriba un valor valido' + chalk.cyan(` (S${chalk.gray`[${chalk.underline`i`}]`}/N${chalk.gray`[${chalk.underline`o`}]`})`);
                     }
                 }])).valor;
             v = (v === "" ? (defa ? "S" : "N") : v);
@@ -150,10 +150,12 @@ try {
                 type: 'checkbox',
                 message: 'Sitios a Compilar',
                 name: 'compilar',
-                choices: sitios.sitios.map(s => ({
-                    name: s.clave,
-                    checked: s.compilar
-                })),
+                choices: sitios.sitios.
+                    sort((a, b) => a.clave.localeCompare(b.clave)).
+                    map(s => ({
+                        name: s.clave,
+                        checked: s.compilar
+                    })),
                 pageSize: 20
             },
         ]);
