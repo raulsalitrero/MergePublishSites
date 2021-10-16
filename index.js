@@ -7,140 +7,78 @@ const {
 } = require("child_process");
 let sitios = require("./sitios.json");
 const yargs = require('yargs/yargs');
-const chalk = require('chalk');
 const { hideBin } = require('yargs/helpers');
 let args = yargs(hideBin(process.argv));
 const inquirer = require('inquirer');
 const pLimit = require('promise-limit');
 const fs = require('fs-extra');
+const { promiseFromChildProcess, promptHidden, promptSiNo } = require('./funciones');
+const chalk = require('chalk');
 
-
-let ultimos = sitios;
-try {
-    ultimos = require("./ultconfig.json");
-    // console.log('ult', ultimos);
-    /* obtiene todas las propiedades del sitio desde sitios.json si existe y el valor de compilar del ultimos */
-    ultimos.sitios = ultimos.sitios.map(ult => {
-        let actual = sitios.sitios.find(act => act.clave === ult.clave) || ult;
-        let merged = { ...actual, compilar: ult.compilar };
-        return merged;
-    });
-} catch (e) {
-    console.error(e);
-    ultimos = sitios;
+/* poner reglas de uso */
+args = args.usage("node index.js [opciones]").locale("es").option('?', {
+    alias: 'h'
+}).alias('?', 'ayuda').option('d', {
+    alias: 'desatendido',
+    demand: false,
+    type: 'boolean',
+    describe: 'Indica si no realiza preguntas (usa sitios.json)'
+}).option('u', {
+    alias: 'ultima',
+    demand: false,
+    type: 'boolean',
+    describe: 'Repite la ultima compilacion (usa ultconfig.json, implica -d)'
+}).help('?');
+args.showHelp();
+args = args.argv;
+if (args.h) {
+    return;
 }
 
+/* obtener datos de la ultima ejecucion si es necesaria
+ y la mezcla con el arreglo de sitios
+ para determinar la lista a compilar */
 
-(async () => {
-    args = args.usage("node index.js [opciones]").locale("es").option('?', {
-        alias: 'h'
-    }).alias('?', 'ayuda').option('d', {
-        alias: 'desatendido',
-        demand: false,
-        type: 'boolean',
-        describe: 'Indica si no realiza preguntas (usa sitios.json)'
-    }).option('u', {
-        alias: 'ultima',
-        demand: false,
-        type: 'boolean',
-        describe: 'Repite la ultima compilacion (usa ultconfig.json, implica -d)'
-    }).help('?');
-    args.showHelp();
-    args = args.argv;
-    if (args.h) {
-        return;
-    }
-
-    const repite = args.u;
-    const desatendido = args.d || repite;
-    if (repite) {
-        sitios = ultimos;
-    }
-    const promiseFromChildProcess = function promiseFromChildProcess(child) {
-        return new Promise((resolve, reject) => {
-            child.addListener("exit", resolve);
+const repite = args.u;
+const desatendido = args.d || repite;
+global.desatendido = desatendido;
+if (repite) {
+    let ultimos = sitios;
+    try {
+        ultimos = require("./ultconfig.json");
+        ultimos.sitios = ultimos.sitios.map(ult => {
+            let actual = sitios.sitios.find(act => act.clave === ult.clave) || ult;
+            let merged = { ...actual, compilar: ult.compilar };
+            return merged;
         });
-    };
+    } catch (e) {
+        console.error(e);
+        ultimos = sitios;
+    }
+    sitios = ultimos;
+}
 
-    const prompt = async function prompt(query, defa, validar = undefined) {
-        if (!desatendido) {
-            return (await inquirer.prompt([
-                {
-                    type: 'input',
-                    message: query,
-                    name: 'valor',
-                    validate: validar || undefined
-                }])).valor
-        } else {
-            return defa;
-        }
-    };
+/* correr todo en una funcioin async para usar await */
+(async () => {
 
-    const promptSiNo = async function promptSiNo(query, defa) {
-        if (!desatendido) {
-            let v = (await inquirer.prompt([
-                {
-                    type: 'input',
-                    message: query + chalk.cyan(` (S${chalk.gray`[${chalk.underline`i`}]`}/N${chalk.gray`[${chalk.underline`o`}]`})`),
-                    name: 'valor',
-                    default: defa ? 'S' : 'N',
-                    validate: function (valor) {
-                        return /^(si?|no?)$/ig.test((valor || '').trim()) ||
-                            'Escriba un valor valido' + chalk.cyan(` (S${chalk.gray`[${chalk.underline`i`}]`}/N${chalk.gray`[${chalk.underline`o`}]`})`);
-                    }
-                }])).valor;
-            v = (v === "" ? (defa ? "S" : "N") : v);
-            return (v.toLowerCase().substr(0, 1) === "s");
-        } else {
-            return defa;
-        }
-    };
-
-    const promptHidden = async function promptHidden(query, defa, validar = undefined) {
-        if (!desatendido) {
-            return (await inquirer.prompt([
-                {
-                    type: 'password',
-                    message: query,
-                    name: 'valor',
-                    default: defa,
-                    validate: validar || undefined
-                }])).valor;
-        } else {
-            defa;
-        }
-    };
-
+    /* limpiar remanentes anteriores */
     const limpias = sitios.sitios.map(async x => {
-        console.log(`limpiando ${x.folder}`);
-        let r = {
-            isFulfilled: () => !this.err,
-            reason: () => this.err && '' + (this.err?.message ?? '') + '\n'
-                (this.err?.stack ?? ''),
-            value: undefined,
-            tag: undefined
-        }
-
-        r.tag = x.folder;
+       
+        console.log(chalk.gray`limpiando ${chalk.white(x.folder)}`);
         try {
-            r.value = await rimraf(`built\\${x.folder}`);
-            return r
+            await rimraf(chalk.gray`built\\${x.folder}`);
+            console.log(chalk.gray`  -> listo: ${chalk.white(x.folder)}`);             
         }
         catch (ex) {
-            r.err = ex;
+            console.error(chalk.red`  -> Error Limpiando: ${chalk.bgGreenBright(x.folder)} ${chalk.bold.red(ex.message ?? ex)}`);
         }
-        return r;
+        return x.folder;
     });
-
-    let cl = await Promise.all(limpias);
-    cl.forEach(inspection => {
-        if (!inspection.isFulfilled()) {
-            console.error(`Error Limpiando: ${inspection.tag} ${inspection.reason()}`);
-        } else {
-            console.log(`listo: ${inspection.tag}`);
-        }
-    })
+    await Promise.all(limpias);
+    console.log(`limpiando sitios.7z`);
     await rimraf("sitios.7z");
+
+    /* preguntar variables y sitios a compilar */
     sitios.vars.comprimir = await promptSiNo("Comprimir?", sitios.vars.comprimir ?? true);
     sitios.vars.borrarwc = await promptSiNo("Borrar Web.config?", sitios.vars.borrarwc ?? true);
     sitios.vars.obtener = await promptSiNo("Obtener Sources?", sitios.vars.obtener ?? true);
@@ -162,7 +100,10 @@ try {
         sitios.sitios.filter(s => {
             return resp.compilar.includes(s.clave);
         }).forEach(s => s.compilar = true);
+    } else {
+        console.log(chalk.gray('Compilando: '), chalk.cyanBright(sitios.sitios.map(s => s.compilar ? s.clave : undefined).filter(Boolean).join(', ')));
     }
+    /* pedir password para el 7zip */
     if (sitios.vars.comprimir) {
         let pw = await promptHidden("Contraseña deseada (vacio para ninguna)", sitios.vars.pw7 || "");
         let pw2 = await promptHidden("Repetir Contraseña deseada (vacio para ninguna)", sitios.vars.pw7 || "");
@@ -174,7 +115,9 @@ try {
         }
     } else {
         sitios.vars.pw7 = sitios.vars.pw7 || "";
-    } try {
+    } 
+    /* grabar seleccion en clon de sitios.json ultconfig.json */
+    try {
         await fs.outputJSON('ultconfig.json', sitios);
         console.log("listo grabando ultconfig.json");
     }
@@ -182,6 +125,7 @@ try {
         console.error(`Error grabando ultconfig.json: ${ex.message}`);
     }
 
+    /* lista json de sitios publicados para el publisher.exe */
     const publicados = sitios.sitios.filter(s => s.compilar).map(s => s.folder + (s.keyVersion ?
         ':' + s.keyVersion : ''));
     try {
@@ -191,6 +135,7 @@ try {
         console.error(`Error grabando publicados.json: ${inspection.reason()}`);
     }
 
+    /* get sources svn*/
     let promesasSVN = [];
     if (sitios.vars.obtener) {
         promesasSVN = sitios.sitios.map(x => {
@@ -214,7 +159,7 @@ try {
     await Promise.all(promesasSVN);
     console.log("obtencion de sources completa");
 
-    /* compilar limitadon a porcesos en paralelo */
+    /* compilar limitado a 4 procesos en paralelo */
     let promesasCompilar = [];
     const parallel = 4;
     let limit = pLimit(parallel);
