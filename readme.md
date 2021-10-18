@@ -1,8 +1,7 @@
 # MergePublishSites.
 
-## Simple publicador de sitios usado para obtener y empaquetar la versión actual de un sitio web y correr el publicador en el serivor para colocarlo en su carpeta y hacer un respaldo del sitio anterior.
+## Simple publicador de sitios usado para obtener y empaquetar la versión actual de un sitio web y correr el publicador en el servidor para colocarlo en su carpeta y hacer un respaldo del sitio anterior.
 
-<br>
 <br>
 
 ### *Pregunta:*
@@ -30,8 +29,7 @@
     "folder": "<ruta compilar>"
   },...]
 ```
-
-Que define las respuestas por defecto asi como variables usadas para encontrar los ejecutables para compilar y comprimir.
+El cual define las respuestas por defecto asi como variables usadas para encontrar los ejecutables para compilar y comprimir.
 
 invoquese con <kbd>node .</kbd>
 y como <kbd>node . -h</kbd> para ver la lista de comandos soportados
