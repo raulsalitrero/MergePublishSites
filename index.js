@@ -66,7 +66,7 @@ if (repite) {
        
         console.log(chalk.gray`limpiando ${chalk.white(x.folder)}`);
         try {
-            await rimraf(chalk.gray`built\\${x.folder}`);
+            await rimraf(`built\\${x.folder}`);
             console.log(chalk.gray`  -> listo: ${chalk.white(x.folder)}`);             
         }
         catch (ex) {
@@ -201,10 +201,10 @@ if (repite) {
 
     //limpiar basura y pdbs
     console.log("limpiando datos basura");
-    const promesasLimpiaCopia = [rimraf("built/** /*.pdb"), rimraf("built/** /*.inc"), rimraf("built/** /*.log"), rimraf(
+    const promesasLimpiaCopia = [rimraf("built/**/*.pdb"), rimraf("built/**/*.inc"), rimraf("built/**/*.log"), rimraf(
         "built/** /*.psd")];
     if (sitios.vars.borrarwc) {
-        promesasLimpiaCopia.push(rimraf("built/** /web.config"));
+        promesasLimpiaCopia.push(rimraf("built/**/web.config"));
     }
     promesasLimpiaCopia.push(...sitios.sitios.map(x => {
         if (x.compilar && x.postcopy) {
