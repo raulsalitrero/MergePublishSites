@@ -63,11 +63,11 @@ if (repite) {
 
     /* limpiar remanentes anteriores */
     const limpias = sitios.sitios.map(async x => {
-       
+
         console.log(chalk.gray`limpiando ${chalk.white(x.folder)}`);
         try {
             await rimraf(`built\\${x.folder}`);
-            console.log(chalk.gray`  -> listo: ${chalk.white(x.folder)}`);             
+            console.log(chalk.gray`  -> listo: ${chalk.white(x.folder)}`);
         }
         catch (ex) {
             console.error(chalk.red`  -> Error Limpiando: ${chalk.bgGreenBright(x.folder)} ${chalk.bold.red(ex.message ?? ex)}`);
@@ -115,7 +115,7 @@ if (repite) {
         }
     } else {
         sitios.vars.pw7 = sitios.vars.pw7 || "";
-    } 
+    }
     /* grabar seleccion en clon de sitios.json ultconfig.json */
     try {
         await fs.outputJSON('ultconfig.json', sitios);
@@ -201,8 +201,11 @@ if (repite) {
 
     //limpiar basura y pdbs
     console.log("limpiando datos basura");
-    const promesasLimpiaCopia = [rimraf("built/**/*.pdb"), rimraf("built/**/*.inc"), rimraf("built/**/*.log"), rimraf(
-        "built/** /*.psd")];
+    const promesasLimpiaCopia = [
+        rimraf("built/**/*.pdb"),
+        rimraf("built/**/*.inc"),
+        rimraf("built/**/*.log"),
+        rimraf("built/**/*.psd")];
     if (sitios.vars.borrarwc) {
         promesasLimpiaCopia.push(rimraf("built/**/web.config"));
     }
@@ -232,7 +235,7 @@ if (repite) {
         let pass = sitios.vars.pw7;
         pass = (pass || (`${pass}`).trim() !== "") ? (`${pass}`).trim() : false;
         const child = exec(
-            `"${sitios.vars.z7}" a sitios.7z -mx=3 -y -ms=100m built publicados.json Microsoft.Web.Infrastructure.dll `+
+            `"${sitios.vars.z7}" a sitios.7z -mx=3 -y -ms=100m built publicados.json Microsoft.Web.Infrastructure.dll ` +
             `Oracle.ManagedDataAccess.dll Newtonsoft.Json.dll BetterFolderBrowser.dll InfoBox.dll thePublisher.exe thePublisher.exe.config ${(pass !== false)
                 ? " -p"
                 : ""}`
