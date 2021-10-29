@@ -18,7 +18,7 @@
     "obtener": true,
     "net4": "C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319",
     "net2": "C:\\Windows\\Microsoft.NET\\Framework\\v2.0.50727",
-    "z7":"C:\\Program Files\\7-zip\\7z.exe",
+    "z7":"C:\\7-zip\\7z.exe",
     "pw7": ""
   },
   "sitios": [{
@@ -28,8 +28,7 @@
     "versionNet": 4,
     "folder": "<ruta compilar>"
   },...]
-```
-El cual define las respuestas por defecto asi como variables usadas para encontrar los ejecutables para compilar y comprimir.
+En este archivo se definen las respuestas por defecto asi como variables usadas para encontrar los ejecutables para compilar y comprimir.
 
 invoquese con <kbd>node .</kbd>
 y como <kbd>node . -h</kbd> para ver la lista de comandos soportados
