@@ -45,9 +45,11 @@ let ultLog = null;
  * @param {*} level 
  * @returns 
  */
-const log_write = (log, level = LOG_LEVEL.LOG) => {
+const log_write = async (log, level = LOG_LEVEL.LOG) => {
     const out = (LOG_LEVEL[level] ?? LOG_LEVEL.LOG);
     out.f.call(this, log);
+    /* esperar la ultima escritura que termine */
+    await ultLog;
     return ultLog = fs.appendFile(`log_${new Date().toISOString().substr(0, 10)}.log`, out.p +
         new Date().toLocaleTimeString() + " " + log.replace(AnsiCodesRegex, '') + "\n");
 }
