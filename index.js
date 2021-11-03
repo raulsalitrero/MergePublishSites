@@ -14,6 +14,43 @@ const pLimit = require('promise-limit');
 const fs = require('fs-extra');
 const { promiseFromChildProcess, promptHidden, promptSiNo } = require('./funciones');
 const chalk = require('chalk');
+/** logs and writes to log file */
+
+/**
+ * Niveles de registro de log
+ * @readonly 
+ * @enum {Object}
+ */
+const LOG_LEVEL = {
+    /** LOG_LEVEL.LOG nivel normal*/
+    LOG: {
+        f: console.log,
+        p: "Log: "
+    }, /** LOG_LEVEL.WARN nivel de advertencia*/
+    WARN: {
+        f: console.warn,
+        p: "Warning: "
+    }, /** LOG_LEVEL.ERR nivel de errores*/
+    ERR: {
+        f: console.error,
+        p: "Error: "
+    }
+};
+Object.freeze(LOG_LEVEL);
+const AnsiCodesRegex = /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
+let ultLog = null;
+/**
+ * Escribe un texto a consola y a un archivo log
+ * @param {string} log texto a escribir
+ * @param {*} level 
+ * @returns 
+ */
+const log_write = (log, level = LOG_LEVEL.LOG) => {
+    const out = (LOG_LEVEL[level] ?? LOG_LEVEL.LOG);
+    out.f.call(this, log);
+    return ultLog = fs.appendFile(`log_${new Date().toISOString().substr(0, 10)}.log`, out.p +
+        new Date().toLocaleTimeString() + " " + log.replace(AnsiCodesRegex, '') + "\n");
+}
 
 /* poner reglas de uso */
 args = args.usage("node index.js [opciones]").locale("es").option('?', {
@@ -52,25 +89,23 @@ if (repite) {
             return merged;
         });
     } catch (e) {
-        console.error(e);
+        log_write(e, LOG_LEVEL.ERR);
         ultimos = sitios;
     }
     sitios = ultimos;
 }
 
-/* correr todo en una funcioin async para usar await */
+/* correr todo en una función async para usar await */
 (async () => {
-
     /* limpiar remanentes anteriores */
     const limpias = sitios.sitios.map(async x => {
-
         console.log(chalk.gray`limpiando ${chalk.white(x.folder)}`);
         try {
             await rimraf(`built\\${x.folder}`);
             console.log(chalk.gray`  -> listo: ${chalk.white(x.folder)}`);
         }
         catch (ex) {
-            console.error(chalk.red`  -> Error Limpiando: ${chalk.bgGreenBright(x.folder)} ${chalk.bold.red(ex.message ?? ex)}`);
+            log_write(chalk.red`  -> Error Limpiando: ${chalk.bgGreenBright(x.folder)} ${chalk.bold.red(ex.message ?? ex)}`, LOG_LEVEL.ERR);
         }
         return x.folder;
     });
@@ -78,6 +113,7 @@ if (repite) {
     console.log(`limpiando sitios.7z`);
     await rimraf("sitios.7z");
 
+    
     /* preguntar variables y sitios a compilar */
     sitios.vars.comprimir = await promptSiNo("Comprimir?", sitios.vars.comprimir ?? true);
     sitios.vars.borrarwc = await promptSiNo("Borrar Web.config?", sitios.vars.borrarwc ?? true);
@@ -116,13 +152,15 @@ if (repite) {
     } else {
         sitios.vars.pw7 = sitios.vars.pw7 || "";
     }
+
+    log_write("Comienza proceso");
     /* grabar seleccion en clon de sitios.json ultconfig.json */
     try {
         await fs.outputJSON('ultconfig.json', sitios);
         console.log("listo grabando ultconfig.json");
     }
     catch (ex) {
-        console.error(`Error grabando ultconfig.json: ${ex.message}`);
+        log_write(`Error grabando ultconfig.json: ${ex.message}`,LOG_LEVEL.ERR);
     }
 
     /* lista json de sitios publicados para el publisher.exe */
@@ -132,12 +170,13 @@ if (repite) {
         await fs.outputJSON('publicados.json', publicados);
         console.log("listo grabando publicados.json");
     } catch (ex) {
-        console.error(`Error grabando publicados.json: ${inspection.reason()}`);
+        log_write(`Error grabando publicados.json: ${inspection.reason()}`,LOG_LEVEL.ERR);
     }
 
     /* get sources svn*/
     let promesasSVN = [];
     if (sitios.vars.obtener) {
+        log_write("obteniendo sources");
         promesasSVN = sitios.sitios.map(x => {
             if (x.compilar) {
                 const child = exec(`svn checkout ${x.repo} svn\\${x.folder}`);
@@ -163,6 +202,7 @@ if (repite) {
     let promesasCompilar = [];
     const parallel = 4;
     let limit = pLimit(parallel);
+    log_write("compilando");
     promesasCompilar = sitios.sitios.map(async x => {
         return limit(() => {
             if (x.compilar) {
@@ -197,10 +237,10 @@ if (repite) {
         });
     });
     await Promise.all(promesasCompilar);
-    console.log("Compilacion completa");
+    log_write("Compilacion completa");
 
     //limpiar basura y pdbs
-    console.log("limpiando datos basura");
+    log_write("limpiando datos basura");
     const promesasLimpiaCopia = [
         rimraf("built/**/*.pdb"),
         rimraf("built/**/*.inc"),
@@ -231,7 +271,7 @@ if (repite) {
 
     //comprimir con 7z
     if (sitios.vars.comprimir) {
-        console.log("Comprimiendo Archivos. puede tomar algun tiempo...");
+        log_write("Comprimiendo Archivos. puede tomar algun tiempo...");
         let pass = sitios.vars.pw7;
         pass = (pass || (`${pass}`).trim() !== "") ? (`${pass}`).trim() : false;
         const child = exec(
@@ -249,4 +289,5 @@ if (repite) {
         });
         await promiseFromChildProcess(child);
     }
+    log_write("termina proceso");
 })();

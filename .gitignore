@@ -6,3 +6,4 @@ ultconfig.json
 /sitios.7z
 /pnpm-lock.yaml
 /package-lock.json
+/*.log
