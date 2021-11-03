@@ -235,7 +235,7 @@ if (repite) {
         let pass = sitios.vars.pw7;
         pass = (pass || (`${pass}`).trim() !== "") ? (`${pass}`).trim() : false;
         const child = exec(
-            `"${sitios.vars.z7}" a sitios.7z -mx=3 -y -ms=100m built publicados.json thePublisher.exe thePublisher.exe.config thePublisher.pdb .\\*.dll ${(pass !== false)
+            `"${sitios.vars.z7}" a sitios.7z -mx=3 -bsp1 -y -ms=100m built publicados.json thePublisher.exe thePublisher.exe.config thePublisher.pdb .\\*.dll ${(pass !== false)
                 ? " -p"
                 : ""}`
         );
