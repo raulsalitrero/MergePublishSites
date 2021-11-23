@@ -55,6 +55,13 @@
     "versionNet": 4,
     "folder": "SaludDigital"
   }, {
+    "clave": "SIT",
+    "compilar": false,
+    "repo": "https://10.18.226.156:8443/svn/sit/trunk",
+    "versionNet": 4,
+    "folder": "sit", 
+    "es64bit":true
+  }, {
     "clave": "eSalud",
     "compilar": false,
     "repo": "https://10.18.226.156:8443/svn/inventarios/trunk",
