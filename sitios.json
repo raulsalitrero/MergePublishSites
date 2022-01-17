@@ -5,103 +5,130 @@
     "obtener": true,
     "net4": "C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319",
     "net2": "C:\\Windows\\Microsoft.NET\\Framework\\v2.0.50727",
-    "z7":"C:\\7-zip\\7z.exe",
+    "z7": "C:\\7-zip\\7z.exe",
     "pw7": ""
   },
-  "sitios": [{
-    "clave": "RECURSOSH",
-    "compilar": false,
-    "repo": "https://10.18.226.156:8443/svn/RecursosH2010/branches/WebSite",
-    "versionNet": 4,
-    "folder": "recursosh"
-  },{
-    "clave": "MCE",
-    "compilar": false,
-    "repo": "https://10.18.226.156:8443/svn/mce/branches/mceext",
-    "versionNet": 4,
-    "folder": "mce",
-    "keyVersion": "MCE"
-  },{
-    "clave": "LOGOS",
-    "compilar": false,
-    "repo": "https://10.18.226.156:8443/svn/logos/trunk",
-    "versionNet": 4,
-    "folder": "logos",
-    "keyVersion": "MCE"
-  },{
-    "clave": "JUSTICIA",
-    "compilar": false,
-    "repo": "https://10.18.226.156:8443/svn/justicia/trunk",
-    "versionNet": 4,
-    "folder": "justicia",
-    "keyVersion": "MCE"
-  }, {
-    "clave": "ICEB",
-    "compilar": false,
-    "repo": "https://10.18.226.156:8443/svn/iceb/trunk",
-    "versionNet": 4,
-    "folder": "iceb",
-    "keyVersion": "ECI"
-  },{
-    "clave": "CCM",
-    "compilar": false,
-    "repo": "https://10.18.226.156:8443/svn/citasReloaded/trunk",
-    "versionNet": 4,
-    "folder": "ccm"
-  }, {
-    "clave": "SaludDigital",
-    "compilar": false,
-    "repo": "https://10.18.226.156:8443/svn/saludDigital/trunk",
-    "versionNet": 4,
-    "folder": "SaludDigital"
-  }, {
-    "clave": "SIT",
-    "compilar": false,
-    "repo": "https://10.18.226.156:8443/svn/sit/trunk",
-    "versionNet": 4,
-    "folder": "sit", 
-    "es64bit":true
-  }, {
-    "clave": "eSalud",
-    "compilar": false,
-    "repo": "https://10.18.226.156:8443/svn/inventarios/trunk",
-    "versionNet": 4,
-    "folder": "eSalud", 
-    "es64bit":true
-  }, {
-    "clave": "desarrolloSocial",
-    "compilar": false,
-    "repo": "https://10.18.226.156:8443/svn/DesarrolloSocial/trunk",
-    "versionNet": 4,
-    "folder": "desarrolloSocial",
-	"keyVersion": "MCE"
-  }, {
-    "clave": "getqr",
-    "compilar": false,
-    "repo": "https://10.18.226.156:8443/svn/Raul.Salitrero/getbc/branches/getqr",
-    "versionNet": 4,
-    "folder": "getqr",
-	"keyVersion": "MCE"
-  }, {
-    "clave": "gehos_web",
-    "compilar": false,
-    "repo": "https://10.18.226.156:8443/svn/gehos_web/trunk",
-    "versionNet": 4,
-    "folder": "gehos_web",
-	"keyVersion": "GEHOS"
-  }, {
-    "clave": "ViP",
-    "compilar": false,
-    "repo": "https://10.18.226.156:8443/svn/ViP/trunk",
-    "versionNet": 4,
-    "folder": "vip"
-  }, {
-    "clave": "VCR",
-    "compilar": false,
-    "repo": "https://10.18.226.156:8443/svn/vcr/trunk",
-    "versionNet": 4,
-    "folder": "vcr",
-    "xclude": "reportes",
-    "postcopy": "reportes"
-  }]
+  "sitios": [
+    {
+      "clave": "RECURSOSH",
+      "compilar": false,
+      "repo": "https://10.18.226.156:8443/svn/RecursosH2010/branches/WebSite",
+      "versionNet": 4,
+      "folder": "recursosh"
+    },
+    {
+      "clave": "MCE",
+      "compilar": false,
+      "repo": "https://10.18.226.156:8443/svn/mce/branches/mceext",
+      "versionNet": 4,
+      "folder": "mce",
+      "keyVersion": "MCE",
+      "es64bit": true
+    },
+    {
+      "clave": "ECOVID",
+      "compilar": false,
+      "repo": "https://SVR-CODE-IC.ses.local:8443/svn/iCovid/trunk",
+      "versionNet": 4,
+      "folder": "ecovid",
+      "keyVersion": "GEHOS",
+      "es64bit": true
+    },
+    {
+      "clave": "LOGOS",
+      "compilar": false,
+      "repo": "https://10.18.226.156:8443/svn/logos/trunk",
+      "versionNet": 4,
+      "folder": "logos",
+      "keyVersion": "MCE"
+    },
+    {
+      "clave": "JUSTICIA",
+      "compilar": false,
+      "repo": "https://10.18.226.156:8443/svn/justicia/trunk",
+      "versionNet": 4,
+      "folder": "justicia",
+      "keyVersion": "MCE"
+    },
+    {
+      "clave": "ICEB",
+      "compilar": false,
+      "repo": "https://10.18.226.156:8443/svn/iceb/trunk",
+      "versionNet": 4,
+      "folder": "iceb",
+      "keyVersion": "ECI",
+      "es64bit": true
+    },
+    {
+      "clave": "CCM",
+      "compilar": false,
+      "repo": "https://10.18.226.156:8443/svn/citasReloaded/trunk",
+      "versionNet": 4,
+      "folder": "ccm",
+      "es64bit": true
+    },
+    {
+      "clave": "SaludDigital",
+      "compilar": false,
+      "repo": "https://10.18.226.156:8443/svn/saludDigital/trunk",
+      "versionNet": 4,
+      "folder": "SaludDigital"
+    },
+    {
+      "clave": "SIT",
+      "compilar": false,
+      "repo": "https://10.18.226.156:8443/svn/sit/trunk",
+      "versionNet": 4,
+      "folder": "sit",
+      "es64bit": true
+    },
+    {
+      "clave": "eSalud",
+      "compilar": false,
+      "repo": "https://10.18.226.156:8443/svn/inventarios/trunk",
+      "versionNet": 4,
+      "folder": "eSalud",
+      "es64bit": true
+    },
+    {
+      "clave": "desarrolloSocial",
+      "compilar": false,
+      "repo": "https://10.18.226.156:8443/svn/DesarrolloSocial/trunk",
+      "versionNet": 4,
+      "folder": "desarrolloSocial",
+      "keyVersion": "MCE"
+    },
+    {
+      "clave": "getqr",
+      "compilar": false,
+      "repo": "https://10.18.226.156:8443/svn/Raul.Salitrero/getbc/branches/getqr",
+      "versionNet": 4,
+      "folder": "getqr",
+      "keyVersion": "MCE"
+    },
+    {
+      "clave": "gehos_web",
+      "compilar": false,
+      "repo": "https://10.18.226.156:8443/svn/gehos_web/trunk",
+      "versionNet": 4,
+      "folder": "gehos_web",
+      "keyVersion": "GEHOS"
+    },
+    {
+      "clave": "ViP",
+      "compilar": false,
+      "repo": "https://10.18.226.156:8443/svn/ViP/trunk",
+      "versionNet": 4,
+      "folder": "vip"
+    },
+    {
+      "clave": "VCR",
+      "compilar": false,
+      "repo": "https://10.18.226.156:8443/svn/vcr/trunk",
+      "versionNet": 4,
+      "folder": "vcr",
+      "xclude": "reportes",
+      "postcopy": "reportes"
+    }
+  ]
 }
