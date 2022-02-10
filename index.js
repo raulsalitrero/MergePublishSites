@@ -115,7 +115,7 @@ if (repite) {
     console.log(`limpiando sitios.7z`);
     await rimraf("sitios.7z");
 
-    
+
     /* preguntar variables y sitios a compilar */
     sitios.vars.comprimir = await promptSiNo("Comprimir?", sitios.vars.comprimir ?? true);
     sitios.vars.borrarwc = await promptSiNo("Borrar Web.config?", sitios.vars.borrarwc ?? true);
@@ -162,7 +162,7 @@ if (repite) {
         console.log("listo grabando ultconfig.json");
     }
     catch (ex) {
-        log_write(`Error grabando ultconfig.json: ${ex.message}`,LOG_LEVEL.ERR);
+        log_write(`Error grabando ultconfig.json: ${ex.message}`, LOG_LEVEL.ERR);
     }
 
     /* lista json de sitios publicados para el publisher.exe */
@@ -172,7 +172,7 @@ if (repite) {
         await fs.outputJSON('publicados.json', publicados);
         console.log("listo grabando publicados.json");
     } catch (ex) {
-        log_write(`Error grabando publicados.json: ${inspection.reason()}`,LOG_LEVEL.ERR);
+        log_write(`Error grabando publicados.json: ${inspection.reason()}`, LOG_LEVEL.ERR);
     }
 
     /* get sources svn*/
@@ -208,34 +208,51 @@ if (repite) {
     promesasCompilar = sitios.sitios.map(async x => {
         return limit(() => {
             if (x.compilar) {
-                let child;
-                let net;
-                net = x.versionNet === 4 ? sitios.vars.net4 : sitios.vars.net2;
-                if (x.es64bit) {
-                    net = net.replace("Microsoft.NET\\Framework\\", "Microsoft.NET\\Framework64\\")
-                }
-                child = exec(
-                    `${net}\\aspnet_compiler.exe -v /${x.folder} -p svn\\${x.folder} -f built\\${x.folder}${x.xclude
-                        ? (typeof (x.xclude) === "string" ?
-                            " -x " + x.xclude :
-                            x.xclude.map(xi => " -x " + xi).join(" "))
-                        : ""}`
-                );
-                child.stdout.on('data', data => {
-                    process.stdout.write(`stdout de ${x.clave}: ${data}`);
-                });
-                child.stderr.on('data', data => {
-                    process.stderr.write(`error de ${x.clave}: ${data}`);
-                });
-                child.on('close', code => {
-                    console.log(
-                        `cerrando aspnet_compiler de ${x.clave}: ${code}`
+                if (!x.customBuild) {
+                    let child;
+                    let net;
+                    net = x.versionNet === 4 ? sitios.vars.net4 : sitios.vars.net2;
+                    if (x.es64bit) {
+                        net = net.replace("Microsoft.NET\\Framework\\", "Microsoft.NET\\Framework64\\")
+                    }
+                    child = exec(
+                        `${net}\\aspnet_compiler.exe -v /${x.folder} -p svn\\${x.folder} -f built\\${x.folder}${x.xclude
+                            ? (typeof (x.xclude) === "string" ?
+                                " -x " + x.xclude :
+                                x.xclude.map(xi => " -x " + xi).join(" "))
+                            : ""}`
                     );
-                });
-                return promiseFromChildProcess(child);
-            } else {
-                return null;
+                    child.stdout.on('data', data => {
+                        process.stdout.write(`stdout de ${x.clave}: ${data}`);
+                    });
+                    child.stderr.on('data', data => {
+                        process.stderr.write(`error de ${x.clave}: ${data}`);
+                    });
+                    child.on('close', code => {
+                        console.log(
+                            `cerrando aspnet_compiler de ${x.clave}: ${code}`
+                        );
+                    });
+                    return promiseFromChildProcess(child);
+                }else{
+                    let child;
+                    child = exec(x.customBuild);
+                    child.stdout.on('data', data => {
+                        process.stdout.write(`stdout de ${x.clave}: ${data}`);
+                    });
+                    child.stderr.on('data', data => {
+                        process.stderr.write(`error de ${x.clave}: ${data}`);
+                    });
+                    child.on('close', code => {
+                        console.log(
+                            `cerrando Build Personalizado de ${x.clave}: ${code}`
+                        );
+                    });
+                    return promiseFromChildProcess(child);
+                }
             }
+            return null;
+
         });
     });
     await Promise.all(promesasCompilar);

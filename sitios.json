@@ -25,6 +25,25 @@
       "keyVersion": "MCE",
       "es64bit": true
     },
+	{
+      "clave": "EPI",
+      "compilar": false,
+      "repo": "https://10.18.226.156:8443/svn/eepi/trunk",
+      "versionNet": 4,
+      "folder": "eepi",
+      "keyVersion": "EPI",
+      "es64bit": true
+    },
+	{
+      "clave": "ATN",
+      "compilar": false,
+      "repo": "https://10.18.226.156:8443/svn/atenciones/trunk/back",
+      "versionNet": 4,
+      "folder": "atenciones",
+      "keyVersion": "ATN",
+      "es64bit": true,
+	    "customBuild": "powershell -command \"& {cd svn\\atenciones; .\\build.ps1}\""
+    },
     {
       "clave": "ECOVID",
       "compilar": false,
