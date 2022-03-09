@@ -12,14 +12,14 @@
     {
       "clave": "RECURSOSH",
       "compilar": false,
-      "repo": "https://10.18.226.156:8443/svn/RecursosH2010/branches/WebSite",
+      "repo": "https://10.18.226.202:8443/svn/RecursosH2010/branches/WebSite",
       "versionNet": 4,
       "folder": "recursosh"
     },
     {
       "clave": "MCE",
       "compilar": false,
-      "repo": "https://10.18.226.156:8443/svn/mce/branches/mceext",
+      "repo": "https://10.18.226.202:8443/svn/mce/branches/mceext",
       "versionNet": 4,
       "folder": "mce",
       "keyVersion": "MCE",
@@ -28,7 +28,7 @@
 	{
       "clave": "EPI",
       "compilar": false,
-      "repo": "https://10.18.226.156:8443/svn/eepi/trunk",
+      "repo": "https://10.18.226.202:8443/svn/eepi/trunk",
       "versionNet": 4,
       "folder": "repi",
       "keyVersion": "EPI",
@@ -37,7 +37,7 @@
 	{
       "clave": "REV",
       "compilar": false,
-      "repo": "https://10.18.226.156:8443/svn/atenciones/trunk/back",
+      "repo": "https://10.18.226.202:8443/svn/atenciones/trunk/back",
       "versionNet": 4,
       "folder": "registro",
       "keyVersion": "REV",
@@ -47,7 +47,7 @@
     {
       "clave": "ECOVID",
       "compilar": false,
-      "repo": "https://SVR-CODE-IC.ses.local:8443/svn/iCovid/trunk",
+      "repo": "https://10.18.226.202:8443/svn/iCovid/trunk",
       "versionNet": 4,
       "folder": "ecovid",
       "keyVersion": "GEHOS",
@@ -56,7 +56,7 @@
     {
       "clave": "LOGOS",
       "compilar": false,
-      "repo": "https://10.18.226.156:8443/svn/logos/trunk",
+      "repo": "https://10.18.226.202:8443/svn/logos/trunk",
       "versionNet": 4,
       "folder": "logos",
       "keyVersion": "MCE"
@@ -64,7 +64,7 @@
     {
       "clave": "JUSTICIA",
       "compilar": false,
-      "repo": "https://10.18.226.156:8443/svn/justicia/trunk",
+      "repo": "https://10.18.226.202:8443/svn/justicia/trunk",
       "versionNet": 4,
       "folder": "justicia",
       "keyVersion": "MCE"
@@ -72,7 +72,7 @@
     {
       "clave": "ICEB",
       "compilar": false,
-      "repo": "https://10.18.226.156:8443/svn/iceb/trunk",
+      "repo": "https://10.18.226.202:8443/svn/iceb/trunk",
       "versionNet": 4,
       "folder": "iceb",
       "keyVersion": "ECI",
@@ -81,7 +81,7 @@
     {
       "clave": "CCM",
       "compilar": false,
-      "repo": "https://10.18.226.156:8443/svn/citasReloaded/trunk",
+      "repo": "https://10.18.226.202:8443/svn/citasReloaded/trunk",
       "versionNet": 4,
       "folder": "ccm",
       "es64bit": true
@@ -89,7 +89,7 @@
     {
       "clave": "SaludDigital",
       "compilar": false,
-      "repo": "https://10.18.226.156:8443/svn/saludDigital/trunk",
+      "repo": "https://10.18.226.202:8443/svn/saludDigital/trunk",
       "versionNet": 4,
       "folder": "SaludDigital",
 	  "keyVersion": "SLD"
@@ -97,7 +97,7 @@
     {
       "clave": "SIT",
       "compilar": false,
-      "repo": "https://10.18.226.156:8443/svn/sit/trunk",
+      "repo": "https://10.18.226.202:8443/svn/sit/trunk",
       "versionNet": 4,
       "folder": "sit",
       "es64bit": true
@@ -105,7 +105,7 @@
     {
       "clave": "eSalud",
       "compilar": false,
-      "repo": "https://10.18.226.156:8443/svn/inventarios/trunk",
+      "repo": "https://10.18.226.202:8443/svn/inventarios/trunk",
       "versionNet": 4,
       "folder": "eSalud",
       "es64bit": true
@@ -113,7 +113,7 @@
     {
       "clave": "desarrolloSocial",
       "compilar": false,
-      "repo": "https://10.18.226.156:8443/svn/DesarrolloSocial/trunk",
+      "repo": "https://10.18.226.202:8443/svn/DesarrolloSocial/trunk",
       "versionNet": 4,
       "folder": "desarrolloSocial",
       "keyVersion": "MCE"
@@ -121,7 +121,7 @@
     {
       "clave": "getqr",
       "compilar": false,
-      "repo": "https://10.18.226.156:8443/svn/Raul.Salitrero/getbc/branches/getqr",
+      "repo": "https://10.18.226.202:8443/svn/Raul.Salitrero/getbc/branches/getqr",
       "versionNet": 4,
       "folder": "getqr",
       "keyVersion": "MCE"
@@ -129,7 +129,7 @@
     {
       "clave": "gehos_web",
       "compilar": false,
-      "repo": "https://10.18.226.156:8443/svn/gehos_web/trunk",
+      "repo": "https://10.18.226.202:8443/svn/gehos_web/trunk",
       "versionNet": 4,
       "folder": "gehos_web",
       "keyVersion": "GEHOS"
@@ -137,14 +137,14 @@
     {
       "clave": "ViP",
       "compilar": false,
-      "repo": "https://10.18.226.156:8443/svn/ViP/trunk",
+      "repo": "https://10.18.226.202:8443/svn/ViP/trunk",
       "versionNet": 4,
       "folder": "vip"
     },
     {
       "clave": "VCR",
       "compilar": false,
-      "repo": "https://10.18.226.156:8443/svn/vcr/trunk",
+      "repo": "https://10.18.226.202:8443/svn/vcr/trunk",
       "versionNet": 4,
       "folder": "vcr",
       "xclude": "reportes",
