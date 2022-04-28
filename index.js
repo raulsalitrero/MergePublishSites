@@ -10,12 +10,8 @@ let args = yargs(hideBin(process.argv));
 const inquirer = require("inquirer");
 const pLimit = require("promise-limit");
 const fs = require("fs-extra");
-const { promiseFromChildProcess, promptHidden, promptSiNo } = require(
-    "./funciones",
-);
+const { promiseFromChildProcess, promptHidden, promptSiNo } = require("./funciones");
 const chalk = require("chalk");
-/** logs and writes to log file */
-
 /**
 * Niveles de registro de log
 * @readonly 
@@ -27,6 +23,7 @@ const LOG_LEVEL = {
     WARN: { f: console.warn, p: "Warning: " }, /** LOG_LEVEL.ERR nivel de errores*/
     ERR: { f: console.error, p: "Error: " },
 };
+// fijar el nivel de log como Enumeración constante
 Object.freeze(LOG_LEVEL);
 const AnsiCodesRegex = /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
 let ultLog = null;
@@ -44,15 +41,11 @@ const log_write = async (log, level = LOG_LEVEL.LOG) => {
     return ultLog =
         fs.appendFile(
             `log_${new Date().toISOString().substring(0, 10)}.log`,
-            out.p +
-                new Date().toLocaleTimeString() +
-                " " +
-                log.replace(AnsiCodesRegex, "") +
-                "\n",
+            out.p + new Date().toLocaleTimeString() + " " + log.replace(AnsiCodesRegex, "") + "\n",
         );
 };
 
-/* poner reglas de uso */
+/* poner instrucciones de uso del programa */
 args =
     args
         .usage("node index.js [opciones]")
@@ -98,9 +91,7 @@ if (repite) {
         ultimos.sitios =
             ultimos.sitios.map(
                 (ult) => {
-                    let actual = sitios.sitios.find(
-                        (act) => act.clave === ult.clave,
-                    ) || ult;
+                    let actual = sitios.sitios.find((act) => act.clave === ult.clave) || ult;
                     let merged = { ...actual, compilar: ult.compilar };
                     return merged;
                 },
@@ -123,9 +114,7 @@ if (repite) {
                 console.log(chalk.gray`  -> listo: ${chalk.white(x.folder)}`);
             } catch (ex) {
                 log_write(
-                    chalk.red`  -> Error Limpiando: ${chalk.bgGreenBright(
-                        x.folder,
-                    )} ${chalk.bold.red(ex.message ?? ex)}`,
+                    chalk.red`  -> Error Limpiando: ${chalk.bgGreenBright(x.folder)} ${chalk.bold.red(ex.message ?? ex)}`,
                     LOG_LEVEL.ERR,
                 );
             }
@@ -137,21 +126,18 @@ if (repite) {
     await rimraf("sitios.7z");
 
     /* preguntar variables y sitios a compilar */
-    sitios.vars.comprimir =
-        await promptSiNo("Comprimir?", sitios.vars.comprimir ?? true);
-    sitios.vars.borrarwc =
-        await promptSiNo("Borrar Web.config?", sitios.vars.borrarwc ?? true);
-    sitios.vars.obtener =
-        await promptSiNo("Obtener Sources?", sitios.vars.obtener ?? true);
+    sitios.vars.comprimir = await promptSiNo("Comprimir?", sitios.vars.comprimir ?? true);
+    sitios.vars.borrarwc = await promptSiNo("Borrar Web.config?", sitios.vars.borrarwc ?? true);
+    sitios.vars.obtener = await promptSiNo("Obtener Sources?", sitios.vars.obtener ?? true);
     if (!desatendido) {
         let resp = await inquirer.prompt([
             {
                 type: "checkbox",
                 message: "Sitios a Compilar",
                 name: "compilar",
-                choices: sitios.sitios.sort(
-                    (a, b) => a.clave.localeCompare(b.clave),
-                ).map((s) => ({ name: s.clave, checked: s.compilar })),
+                choices: sitios.sitios.sort((a, b) => a.clave.localeCompare(b.clave)).map(
+                    (s) => ({ name: s.clave, checked: s.compilar }),
+                ),
                 pageSize: 20,
             },
         ]);
@@ -165,23 +151,13 @@ if (repite) {
     } else {
         console.log(
             chalk.gray("Compilando: "),
-            chalk.cyanBright(
-                sitios.sitios.map((s) => s.compilar ? s.clave : undefined).filter(
-                    Boolean,
-                ).join(", "),
-            ),
+            chalk.cyanBright(sitios.sitios.map((s) => s.compilar ? s.clave : undefined).filter(Boolean).join(", ")),
         );
     }
     /* pedir password para el 7zip */
     if (sitios.vars.comprimir) {
-        let pw = await promptHidden(
-            "Contraseña deseada (vacio para ninguna)",
-            sitios.vars.pw7 || "",
-        );
-        let pw2 = await promptHidden(
-            "Repetir Contraseña deseada (vacio para ninguna)",
-            sitios.vars.pw7 || "",
-        );
+        let pw = await promptHidden("Contraseña deseada (vacio para ninguna)", sitios.vars.pw7 || "");
+        let pw2 = await promptHidden("Repetir Contraseña deseada (vacio para ninguna)", sitios.vars.pw7 || "");
         if (pw !== pw2) {
             console.log("los Passwords no coinciden, se dejara vacio");
             sitios.vars.pw7 = "";
@@ -209,10 +185,7 @@ if (repite) {
         await fs.outputJSON("publicados.json", publicados);
         console.log("listo grabando publicados.json");
     } catch (ex) {
-        log_write(
-            `Error grabando publicados.json: ${inspection.reason()}`,
-            LOG_LEVEL.ERR,
-        );
+        log_write(`Error grabando publicados.json: ${inspection.reason()}`, LOG_LEVEL.ERR);
     }
 
     /* get sources svn*/
@@ -223,23 +196,17 @@ if (repite) {
             sitios.sitios.map(
                 (x) => {
                     if (x.compilar) {
-                        const child = exec(
-                            `svn checkout ${x.repo} svn\\${x.folder}`,
-                        );
+                        const child = exec(`svn checkout ${x.repo} svn\\${x.folder}`);
                         child.stdout.on(
                             "data",
                             (data) => {
-                                process.stdout.write(
-                                    `stdout de ${x.clave}: ${data}`,
-                                );
+                                process.stdout.write(`stdout de ${x.clave}: ${data}`);
                             },
                         );
                         child.stderr.on(
                             "data",
                             (data) => {
-                                process.stderr.write(
-                                    `error de ${x.clave}: ${data}`,
-                                );
+                                process.stderr.write(`error de ${x.clave}: ${data}`);
                             },
                         );
                         child.on(
@@ -271,14 +238,9 @@ if (repite) {
                         if (!x.customBuild) {
                             let child;
                             let net;
-                            net =
-                                x.versionNet === 4 ? sitios.vars.net4 : sitios.vars.net2;
+                            net = x.versionNet === 4 ? sitios.vars.net4 : sitios.vars.net2;
                             if (x.es64bit) {
-                                net =
-                                    net.replace(
-                                        "Microsoft.NET\\Framework\\",
-                                        "Microsoft.NET\\Framework64\\",
-                                    );
+                                net = net.replace("Microsoft.NET\\Framework\\", "Microsoft.NET\\Framework64\\");
                             }
                             child =
                                 exec(
@@ -293,25 +255,19 @@ if (repite) {
                             child.stdout.on(
                                 "data",
                                 (data) => {
-                                    process.stdout.write(
-                                        `stdout de ${x.clave}: ${data}`,
-                                    );
+                                    process.stdout.write(`stdout de ${x.clave}: ${data}`);
                                 },
                             );
                             child.stderr.on(
                                 "data",
                                 (data) => {
-                                    process.stderr.write(
-                                        `error de ${x.clave}: ${data}`,
-                                    );
+                                    process.stderr.write(`error de ${x.clave}: ${data}`);
                                 },
                             );
                             child.on(
                                 "close",
                                 (code) => {
-                                    console.log(
-                                        `cerrando aspnet_compiler de ${x.clave}: ${code}`,
-                                    );
+                                    console.log(`cerrando aspnet_compiler de ${x.clave}: ${code}`);
                                 },
                             );
                             return promiseFromChildProcess(child);
@@ -321,25 +277,19 @@ if (repite) {
                             child.stdout.on(
                                 "data",
                                 (data) => {
-                                    process.stdout.write(
-                                        `stdout de ${x.clave}: ${data}`,
-                                    );
+                                    process.stdout.write(`stdout de ${x.clave}: ${data}`);
                                 },
                             );
                             child.stderr.on(
                                 "data",
                                 (data) => {
-                                    process.stderr.write(
-                                        `error de ${x.clave}: ${data}`,
-                                    );
+                                    process.stderr.write(`error de ${x.clave}: ${data}`);
                                 },
                             );
                             child.on(
                                 "close",
                                 (code) => {
-                                    console.log(
-                                        `cerrando Build Personalizado de ${x.clave}: ${code}`,
-                                    );
+                                    console.log(`cerrando Build Personalizado de ${x.clave}: ${code}`);
                                 },
                             );
                             return promiseFromChildProcess(child);
