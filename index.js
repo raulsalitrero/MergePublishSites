@@ -43,7 +43,7 @@ const log_write = async (log, level = LOG_LEVEL.LOG) => {
     await ultLog;
     return ultLog =
         fs.appendFile(
-            `log_${new Date().toISOString().substr(0, 10)}.log`,
+            `log_${new Date().toISOString().substring(0, 10)}.log`,
             out.p +
                 new Date().toLocaleTimeString() +
                 " " +
