@@ -2,9 +2,9 @@
   "name": "publish",
   "version": "0.2.0",
   "description": "Publica los sitios",
-  "main": "index.js",
+  "main": "index.mjs",
   "scripts": {
-    "test": "node index.js"
+    "test": "node index.mjs"
   },
   "author": "Raul Salitrero",
   "license": "LGPL-3.0",
@@ -13,7 +13,9 @@
     "fs-extra": "^10.1.0",
     "inquirer": "^8.2.4",
     "promise-limit": "^2.7.0",
-    "rimraf": "^3.0.2",
-    "yargs": "^17.5.0"
+    "rimraf": "^3.0.2"
+  },
+  "devDependencies": {
+    "yargs": "^17.7.2"
   }
 }
