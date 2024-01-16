@@ -4,7 +4,6 @@ import util from 'util';
 import rimrafModule from 'rimraf';
 const rimraf = util.promisify(rimrafModule);
 import { exec } from 'child_process';
-
 import yargs from 'yargs/yargs';
 import { hideBin } from 'yargs/helpers';
 let args = yargs(hideBin(process.argv));
@@ -12,7 +11,7 @@ import inquirer from 'inquirer';
 import pLimit from 'promise-limit';
 import fs from 'fs-extra';
 let datosSitios = await fs.readJSON('./sitios.json');
-import { promiseFromChildProcess, promptHidden, promptSiNo } from './funciones.js';
+import { promiseFromChildProcess, promptHidden, promptSiNo } from './funciones.mjs';
 import chalk from 'chalk';
 
 /**

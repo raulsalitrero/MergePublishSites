@@ -1,5 +1,5 @@
-const inquirer = require('inquirer');
-const chalk = require('chalk');
+import inquirer from 'inquirer';
+import chalk from 'chalk';
 
 /* funciones y utilidades */
 /**
@@ -18,8 +18,8 @@ const promiseFromChildProcess = function promiseFromChildProcess(child) {
  * Realiza un prompt de **inquirerjs**, solo es un wrapper para mantener la API compatible a la version antigua del codigo
  * @param {string} query Texto a preguntar (mostrar)
  * @param {string} defa Valor por defecto tras el prompt
- * @param {function} validar funcon para validar si la entrada es correcta
- * @param 
+ * @param {function} validar función para validar si la entrada es correcta
+ * @param  {boolean} desatendido indica si esta corriendo de manera que no pregunte y devuelva solo el valor default
  * @returns {string} valor escrito
  */
 const prompt = async function prompt(query, defa, validar = undefined, desatendido = global.desatendido) {
@@ -43,7 +43,6 @@ const prompt = async function prompt(query, defa, validar = undefined, desatendi
  * @param {string} query Pregunta a realizar
  * @param {boolean} defa Valor predeterminado 
  * @param {boolean} desatendido indica si esta corriendo de manera que no pregunte y devuelva solo el valor default
- * @returns {boolean} desicion tomada
  */
 const promptSiNo = async function promptSiNo(query, defa, desatendido = global.desatendido) {
     if (!desatendido) {
@@ -85,4 +84,4 @@ const promptHidden = async function promptHidden(query, defa, validar = undefine
     }
 };
 
-module.exports = { promiseFromChildProcess, prompt, promptHidden, promptSiNo };
+export { promiseFromChildProcess, prompt, promptHidden, promptSiNo };
