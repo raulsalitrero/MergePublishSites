@@ -61,6 +61,14 @@
       "folder": "logos",
       "keyVersion": "MCE"
     },
+	 {
+      "clave": "SIT2",
+      "compilar": false,
+      "repo": "https://10.18.226.202:8443/svn/sit2/trunk",
+      "versionNet": 4,
+      "folder": "sit2",
+      "es64bit": true
+    },
     {
       "clave": "JUSTICIA",
       "compilar": false,
